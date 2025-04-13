@@ -2,3 +2,7 @@ scikit-learn
 numpy
 pandas
 cv
+webbrowser
+streamlit
+PIL
+tempfile

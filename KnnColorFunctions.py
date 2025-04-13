@@ -51,8 +51,11 @@ def reshaped_image_3d_plot(input_img):
     fig = plt.figure(figsize=(13,13))
     ax = fig.add_subplot(111, projection='3d')
     ax.set_xlabel('R',color="r", fontsize=12)
+    ax.set_xlim([0,255])
     ax.set_ylabel('G',color="g", fontsize=12)
+    ax.set_ylim([0,255])
     ax.set_zlabel('B',color="b", fontsize=12)
+    ax.set_zlim([0,255])
     ax.scatter(red, green, blue,c=np.stack((red/255, green/255, blue/255), axis=-1), marker='o')
 
     plt.title("RGB Decomposition of initial image",fontsize=20)
