@@ -84,7 +84,7 @@ def find_RAL(centroid_colors):
 def KMeans_models (reshaped_image):
     scaler=MinMaxScaler()
     X=scaler.fit_transform(reshaped_image)
-    k_range = range(2,6) # range of K means that can be tuned
+    k_range = range(2,4) # range of K means that can be tuned
 
     k_index=[]
     k_inertia=[]
@@ -191,7 +191,7 @@ def create_color_rectangle_centroid(k_main_color_list,percentage_counts_k):
         draw.text((x, y), text, fill=(0, 0, 0), font=font, stroke_width=1, stroke_fill=(255, 255, 255))
 
         # Save image
-        image.save(f"rectangle_image{i}.png")
+        image.save(f"./images/rectangle_image{i}.png")
     return "images created"
 
 def convert_to_list(color_string):

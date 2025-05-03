@@ -6,3 +6,4 @@ webbrowser
 streamlit
 PIL
 tempfile
+streamlit-clickable-images
