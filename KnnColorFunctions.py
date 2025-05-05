@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import cv2 as cv
 import matplotlib.pyplot as plt
-
+import streamlit as st
 from cv2 import cvtColor,resize
 from PIL import Image, ImageDraw, ImageFont
 
@@ -93,7 +93,8 @@ def KMeans_models (reshaped_image):
     labels_k=[]
 
     for k in k_range:
-        print (f"Processing cycle with {k} centroids, out of a max of {max(k_range)}")
+        k_means_log= (f"Processing cycle with {k} centroids, out of a max of {max(k_range)}")
+        st.write(k_means_log)
         k_index.append(k)
         model = KMeans (n_clusters=k,random_state=42,init="random",max_iter=500, n_init=10)
         model.fit(X)
@@ -105,7 +106,7 @@ def KMeans_models (reshaped_image):
         #lookup https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html#sklearn.metrics.silhouette_score
         #for automatic inflection point evaluation in elbow method
 
-    return k_index,centroids_k,labels_k,k_inertia,silhouette_k
+    return k_index,centroids_k,labels_k,k_inertia,silhouette_k,k_means_log
 
 def colors_k_centroids_all (centroids_k):
     """COLOR DISTRUBUTION OF CENTROIDS"""
@@ -192,7 +193,7 @@ def create_color_rectangle_centroid(k_main_color_list,percentage_counts_k):
 
         # Save image
         image.save(f"./images/rectangle_image{i}.png")
-    return "images created"
+    return
 
 def convert_to_list(color_string):
     return np.array(list(map(int, color_string.split('-'))))
@@ -215,7 +216,7 @@ def classify_RAL (rgb_color):
 
 def return_product_URL (predicted_RAL_code, predicted_RAL_text):
     # Set the preset search query
-    search_query = str(predicted_RAL_text) + str(predicted_RAL_code) + " table spray"
+    search_query = str(predicted_RAL_text) + str(predicted_RAL_code)
 
     # Construct the search URL for Google
     url = f"https://www.google.com/search?q={search_query}"
