@@ -15,8 +15,13 @@ from streamlit_clickable_images import clickable_images
 import atexit
 import KnnColorFunctions as Knnfcn
 
-st.title("🖼️ KNN Color Finder")
+st.title("🎨KNN Color Finder🔎")
+# Description
 
+st.markdown("This app helps you find coloring products such as "
+            "**can sprays**, **table varnishes**, and **wall paints** "
+            "that match the main colors of a multicolor image of your choice - *upload an image to get started!*")
+st.image("static/KnnColorFinderLogo.png", use_container_width=True)
 
 
 
@@ -30,7 +35,7 @@ if 'last_uploaded_filename' not in st.session_state:
     st.session_state.last_uploaded_filename = None
 
 # File uploader
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("⬇ **Upload an image** ⬇", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     uploaded_filename = uploaded_file.name
@@ -45,16 +50,16 @@ if uploaded_file is not None:
          # Open image
         image = Image.open(uploaded_file)
         image.save("data/input.jpg")  # Save as JPEG
-        st.image(image, caption="Uploaded Image", use_container_width =True)
+        st.image(image, caption="✅ Uploaded Image - it is now being processed 💻", use_container_width =True)
         reshaped_image=Knnfcn.reshape_image("data/input.jpg")
         decomposed_reshaped_image_3dplot = Knnfcn.reshaped_image_3d_plot("data/input.jpg")
         # Convert to grayscale (simple transformation)
-        st.subheader("Decomposed Colors from Image")
+        st.subheader("🔎 Decomposed Colors from Image ")
         st.pyplot(decomposed_reshaped_image_3dplot, use_container_width=True)
-        st.caption("All pixels of the intial image are decomposed into their RGB components and represented in a 3D plot")
+        st.caption("All pixels of the intial image are decomposed into their RGB components 🟥🟩🟦")
 
         # Run ML processing only once per new file
-        with st.spinner("Running model to find the 3 main colors of the image..."):
+        with st.spinner("Running model to find the 3 main colors of the image 🕵️‍♂️..."):
             WebAppFunctions.delete_images() #delete images only once
 
 
@@ -64,7 +69,7 @@ if uploaded_file is not None:
             st.session_state.k_main_color_list = k_main_color_list
             st.session_state.ml_result = Knnfcn.create_color_rectangle_centroid(k_main_color_list,percentage_counts_k)
             st.session_state.ml_done = True
-            st.success("ML Processing Complete")
+            st.success("🏁 ML Processing Complete 🏁")
 
 
 
@@ -74,7 +79,7 @@ if uploaded_file is not None:
     elif st.session_state.ml_done:
         # Already processed, just show results
         st.image(os.path.join("data", "input.jpg"), caption="Uploaded Image", use_container_width=True)
-        st.subheader("Detected main color - choose one")
+        st.subheader("🟥🟩🟦 Detected main colors - choose one")
 
 
 
@@ -95,7 +100,7 @@ for i, filename in enumerate(image_files):
     with col1:
         st.image(os.path.join(image_folder, filename), width=100)
     with col2:
-        if st.button(f"Select", key=filename):
+        if st.button(f"Select color", key=filename):
             st.session_state.selected_index = i
             if 'k_main_color_list' in st.session_state:
                 k_main_color_list=st.session_state.k_main_color_list
@@ -103,14 +108,14 @@ for i, filename in enumerate(image_files):
                 selected_color = k_main_color_list[i][0]
                 ral_name = Knnfcn.classify_RAL(selected_color)
                 url = Knnfcn.return_product_URL(ral_name[0], ral_name[1])
-                st.write(f"Selected color: {ral_name[1]}")  # Optionally display the selected product name
+                st.write(f"✅ Selected color: {ral_name[1]}")  # Optionally display the selected product name
                 st.session_state.selected_url = url
 
 if 'selected_product_name' not in st.session_state:
      st.session_state.selected_product_name = None
 
 if st.session_state.selected_url:
-    st.subheader("Typical color products - choose one")
+    st.subheader("🖌️🎨 Typical color products - choose one")
     product_list = ["can_spray", "table_varnish", "wall_paint"]
 
     for i, filename in enumerate(product_list):
@@ -122,5 +127,5 @@ if st.session_state.selected_url:
                     st.session_state.selected_product_name = filename
 
 if st.session_state.selected_product_name:
-    st.subheader("🔗 Selected Product URL")
+    st.subheader("🔗 Selected Product URL 🛒")
     st.markdown(f"{st.session_state.selected_url}+{st.session_state.selected_product_name}")

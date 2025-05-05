@@ -93,7 +93,7 @@ def KMeans_models (reshaped_image):
     labels_k=[]
 
     for k in k_range:
-        k_means_log= (f"Processing cycle with {k} centroids, out of a max of {max(k_range)}")
+        k_means_log= (f"🤖💬 Processing cycle with {k} centroids, out of a max of {max(k_range)}...")
         st.write(k_means_log)
         k_index.append(k)
         model = KMeans (n_clusters=k,random_state=42,init="random",max_iter=500, n_init=10)
